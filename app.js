@@ -1,23 +1,89 @@
-const API_KEY = "5e6235a7a088c373e121fe3e9a4d1834";
+const { Client, GatewayIntentBits, EmbedBuilder } = require("discord.js");
+const express = require("express");
 
-async function searchMovies() {
-  const query = document.getElementById("search").value;
+const app = express();
+app.use(express.json());
 
-  if (!query) return;
+let bot;
+let client;
 
-  const res = await fetch(
-    `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${query}`
-  );
+let config = {
+  token: "",
+  guildId: "",
+  logChannelName: "logs"
+};
 
-  const data = await res.json();
+// START BOT
+async function startBot(token) {
+  client = new Client({
+    intents: [
+      GatewayIntentBits.Guilds,
+      GatewayIntentBits.GuildMessages,
+      GatewayIntentBits.MessageContent
+    ]
+  });
 
-  const results = document.getElementById("results");
+  client.once("ready", async () => {
+    console.log("Bot started");
 
-  results.innerHTML = data.results.map(movie => `
-    <div class="card">
-      <img style="width:100%;border-radius:8px"
-        src="https://image.tmdb.org/t/p/w300${movie.poster_path || ''}" />
-      <h4>${movie.title}</h4>
-    </div>
-  `).join("");
+    const guild = client.guilds.cache.get(config.guildId);
+    if (!guild) return;
+
+    const channel = guild.channels.cache.find(c => c.name === config.logChannelName);
+
+    if (channel) {
+      const embed = new EmbedBuilder()
+        .setTitle("🟢 Bot Started")
+        .setDescription(`Bot is online as ${client.user.tag}`)
+        .setColor("Green")
+        .setTimestamp();
+
+      channel.send({ embeds: [embed] });
+    }
+  });
+
+  client.on("messageCreate", (msg) => {
+    if (msg.content === "!ping") {
+      msg.reply("Pong 🏓");
+    }
+  });
+
+  await client.login(token);
 }
+
+// STOP BOT
+async function stopBot() {
+  if (client) {
+    const guild = client.guilds.cache.get(config.guildId);
+    if (guild) {
+      const channel = guild.channels.cache.find(c => c.name === config.logChannelName);
+
+      if (channel) {
+        const embed = new EmbedBuilder()
+          .setTitle("🔴 Bot Stopped")
+          .setDescription("Bot is offline")
+          .setColor("Red")
+          .setTimestamp();
+
+        channel.send({ embeds: [embed] });
+      }
+    }
+
+    client.destroy();
+    client = null;
+  }
+}
+
+// API (from dashboard)
+app.post("/start", async (req, res) => {
+  config = req.body;
+  await startBot(config.token);
+  res.send("Bot started");
+});
+
+app.post("/stop", async (req, res) => {
+  await stopBot();
+  res.send("Bot stopped");
+});
+
+app.listen(3000, () => console.log("Control server running"));
