@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Discord Bot Dashboard</title>
+  <title>Discord Bot Control</title>
   <style>
     body {
-      margin:0;
-      font-family:Arial;
       background:#0b0b0f;
       color:white;
+      font-family:Arial;
+      text-align:center;
     }
 
     .box {
-      max-width:600px;
+      max-width:500px;
       margin:50px auto;
       background:#1a1a22;
       padding:20px;
@@ -27,41 +27,50 @@
     }
 
     button {
-      background:red;
-      color:white;
       cursor:pointer;
     }
 
-    h1 { text-align:center; }
+    .start { background:green; color:white; }
+    .stop { background:red; color:white; }
   </style>
 </head>
 
 <body>
 
 <div class="box">
-  <h1>🤖 Discord Bot Panel</h1>
+  <h1>🤖 Bot Dashboard</h1>
 
   <input id="token" placeholder="Bot Token">
-  <input id="prefix" placeholder="Prefix (!, /, ?)">
   <input id="guild" placeholder="Server ID">
 
-  <button onclick="save()">Save Config</button>
+  <button class="start" onclick="startBot()">Start Bot</button>
+  <button class="stop" onclick="stopBot()">Stop Bot</button>
 
   <p id="status"></p>
 </div>
 
 <script>
-function save() {
-  const config = {
+async function startBot() {
+  const data = {
     token: document.getElementById("token").value,
-    prefix: document.getElementById("prefix").value,
-    guild: document.getElementById("guild").value
+    guildId: document.getElementById("guild").value
   };
 
-  localStorage.setItem("botConfig", JSON.stringify(config));
+  await fetch("http://localhost:3000/start", {
+    method: "POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify(data)
+  });
 
-  document.getElementById("status").innerText =
-    "Saved locally (frontend only)";
+  document.getElementById("status").innerText = "Bot started";
+}
+
+async function stopBot() {
+  await fetch("http://localhost:3000/stop", {
+    method: "POST"
+  });
+
+  document.getElementById("status").innerText = "Bot stopped";
 }
 </script>
 
