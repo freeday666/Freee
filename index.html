@@ -1,95 +1,69 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Midoflex Movies</title>
-
+  <title>Discord Bot Dashboard</title>
   <style>
     body {
-      margin: 0;
-      font-family: Arial;
-      background: #0b0b0f;
-      color: white;
-      overflow-x: hidden;
+      margin:0;
+      font-family:Arial;
+      background:#0b0b0f;
+      color:white;
     }
 
-    .hero {
-      height: 40vh;
-      background: linear-gradient(to bottom, transparent, #0b0b0f),
-        url("https://images.unsplash.com/photo-1524985069026-dd778a71c7b4") center/cover;
-      display: flex;
-      align-items: flex-end;
-      padding: 20px;
-      animation: zoom 20s infinite alternate;
+    .box {
+      max-width:600px;
+      margin:50px auto;
+      background:#1a1a22;
+      padding:20px;
+      border-radius:12px;
     }
 
-    @keyframes zoom {
-      from { transform: scale(1); }
-      to { transform: scale(1.1); }
-    }
-
-    h1 {
-      margin: 0;
-      font-size: 32px;
-    }
-
-    .container {
-      padding: 20px;
-    }
-
-    input {
-      padding: 10px;
-      width: 70%;
-      border-radius: 8px;
-      border: none;
+    input, button {
+      width:100%;
+      padding:10px;
+      margin-top:10px;
+      border:none;
+      border-radius:8px;
     }
 
     button {
-      padding: 10px;
-      background: red;
-      border: none;
-      color: white;
-      border-radius: 8px;
-      cursor: pointer;
+      background:red;
+      color:white;
+      cursor:pointer;
     }
 
-    .grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 20px;
-    }
-
-    .card {
-      width: 150px;
-      background: #1a1a22;
-      padding: 10px;
-      border-radius: 10px;
-      transition: 0.3s;
-    }
-
-    .card:hover {
-      transform: scale(1.05);
-    }
+    h1 { text-align:center; }
   </style>
 </head>
 
 <body>
 
-  <div class="hero">
-    <h1>🎬 Midoflex Movies</h1>
-  </div>
+<div class="box">
+  <h1>🤖 Discord Bot Panel</h1>
 
-  <div class="container">
+  <input id="token" placeholder="Bot Token">
+  <input id="prefix" placeholder="Prefix (!, /, ?)">
+  <input id="guild" placeholder="Server ID">
 
-    <input id="search" placeholder="Search movies..." />
-    <button onclick="searchMovies()">Search</button>
+  <button onclick="save()">Save Config</button>
 
-    <div id="results" class="grid"></div>
+  <p id="status"></p>
+</div>
 
-  </div>
+<script>
+function save() {
+  const config = {
+    token: document.getElementById("token").value,
+    prefix: document.getElementById("prefix").value,
+    guild: document.getElementById("guild").value
+  };
 
-  <script src="app.js"></script>
+  localStorage.setItem("botConfig", JSON.stringify(config));
+
+  document.getElementById("status").innerText =
+    "Saved locally (frontend only)";
+}
+</script>
+
 </body>
 </html>
