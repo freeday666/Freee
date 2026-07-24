@@ -1,78 +1,272 @@
 <!DOCTYPE html>
-<html>
+<html lang="nl">
 <head>
-  <title>Discord Bot Control</title>
-  <style>
-    body {
-      background:#0b0b0f;
-      color:white;
-      font-family:Arial;
-      text-align:center;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Freddo Gaming</title>
 
-    .box {
-      max-width:500px;
-      margin:50px auto;
-      background:#1a1a22;
-      padding:20px;
-      border-radius:12px;
-    }
+<style>
+* {
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: 'Arial', sans-serif;
+}
 
-    input, button {
-      width:100%;
-      padding:10px;
-      margin-top:10px;
-      border:none;
-      border-radius:8px;
-    }
+body {
+    background:#050505;
+    color:white;
+}
 
-    button {
-      cursor:pointer;
-    }
+/* NAV */
+nav {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:20px 50px;
+    background:#080808;
+    border-bottom:1px solid #222;
+}
 
-    .start { background:green; color:white; }
-    .stop { background:red; color:white; }
-  </style>
+.logo {
+    font-size:28px;
+    font-weight:bold;
+    color:#00bfff;
+}
+
+nav a {
+    color:white;
+    text-decoration:none;
+    margin:0 15px;
+}
+
+nav a:hover {
+    color:#00bfff;
+}
+
+/* HERO */
+.hero {
+    height:80vh;
+    background:
+    linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.8)),
+    url("https://images.unsplash.com/photo-1511512578047-dfb367046420");
+    background-size:cover;
+    background-position:center;
+    display:flex;
+    align-items:center;
+    padding:60px;
+}
+
+.hero h1 {
+    font-size:70px;
+}
+
+.hero span {
+    color:#00bfff;
+}
+
+.hero p {
+    font-size:22px;
+    margin:20px 0;
+}
+
+button {
+    background:#00bfff;
+    color:black;
+    padding:15px 35px;
+    border:none;
+    border-radius:10px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+/* SECTIONS */
+section {
+    padding:60px;
+}
+
+.title {
+    font-size:40px;
+    margin-bottom:30px;
+    color:#00bfff;
+}
+
+/* CARDS */
+.cards {
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:25px;
+}
+
+.card {
+    background:#111;
+    padding:30px;
+    border-radius:15px;
+    border:1px solid #222;
+    transition:.3s;
+}
+
+.card:hover {
+    transform:translateY(-10px);
+    border-color:#00bfff;
+}
+
+.card h2 {
+    margin-bottom:15px;
+}
+
+/* GARAGE */
+.car {
+    background:
+    linear-gradient(rgba(0,0,0,.5),rgba(0,0,0,.8)),
+    url("https://images.unsplash.com/photo-1503376780353-7e6692767b70");
+    background-size:cover;
+    height:250px;
+    border-radius:15px;
+    display:flex;
+    align-items:end;
+    padding:20px;
+}
+
+/* FOOTER */
+footer {
+    text-align:center;
+    padding:30px;
+    background:#080808;
+    color:#777;
+}
+
+</style>
 </head>
 
 <body>
 
-<div class="box">
-  <h1>🤖 Bot Dashboard</h1>
+<nav>
+<div class="logo">FREDDO GAMING</div>
 
-  <input id="token" placeholder="Bot Token">
-  <input id="guild" placeholder="Server ID">
+<div>
+<a href="#home">Home</a>
+<a href="#garage">Garage</a>
+<a href="#profiel">Profiel</a>
+<a href="#shop">Shop</a>
+<a href="#server">Server</a>
+</div>
+</nav>
 
-  <button class="start" onclick="startBot()">Start Bot</button>
-  <button class="stop" onclick="stopBot()">Stop Bot</button>
 
-  <p id="status"></p>
+<section class="hero" id="home">
+
+<div>
+<h1>Freddo <span>Gaming</span></h1>
+<p>Realistische FiveM RP Experience</p>
+<p>Cars • Roleplay • Servers • Community</p>
+
+<button>Start Game</button>
 </div>
 
-<script>
-async function startBot() {
-  const data = {
-    token: document.getElementById("token").value,
-    guildId: document.getElementById("guild").value
-  };
+</section>
 
-  await fetch("http://localhost:3000/start", {
-    method: "POST",
-    headers: {"Content-Type":"application/json"},
-    body: JSON.stringify(data)
-  });
 
-  document.getElementById("status").innerText = "Bot started";
-}
 
-async function stopBot() {
-  await fetch("http://localhost:3000/stop", {
-    method: "POST"
-  });
+<section id="garage">
 
-  document.getElementById("status").innerText = "Bot stopped";
-}
-</script>
+<h1 class="title">🚗 Garage</h1>
+
+<div class="cards">
+
+<div class="car">
+<h2>BMW M4 RP Edition</h2>
+</div>
+
+<div class="car">
+<h2>BMW X6 Luxury</h2>
+</div>
+
+</div>
+
+</section>
+
+
+
+
+<section id="profiel">
+
+<h1 class="title">👤 Profiel</h1>
+
+<div class="cards">
+
+<div class="card">
+<h2>Speler</h2>
+<p>Freddo</p>
+</div>
+
+<div class="card">
+<h2>Level</h2>
+<p>250 RP</p>
+</div>
+
+<div class="card">
+<h2>Achievements</h2>
+<p>Top Driver</p>
+</div>
+
+</div>
+
+</section>
+
+
+
+
+<section id="shop">
+
+<h1 class="title">🛒 Shop</h1>
+
+<div class="cards">
+
+<div class="card">
+<h2>Vehicle Pack</h2>
+<p>Nieuwe voertuigen</p>
+</div>
+
+<div class="card">
+<h2>Premium</h2>
+<p>Speciale toegang</p>
+</div>
+
+</div>
+
+</section>
+
+
+
+
+<section id="server">
+
+<h1 class="title">🌐 Server</h1>
+
+<div class="cards">
+
+<div class="card">
+<h2>Freddo RP Server</h2>
+<p>Status: Online</p>
+<p>Players: 128/200</p>
+</div>
+
+<div class="card">
+<h2>Regels</h2>
+<p>Serieuze Roleplay</p>
+</div>
+
+</div>
+
+</section>
+
+
+
+<footer>
+© 2026 Freddo Gaming - FiveM RP Community
+</footer>
+
 
 </body>
 </html>
